@@ -1,0 +1,205 @@
+// //LOCALSTORAGE
+// obtener_localstorage();
+// //guardar_localstorage();
+
+// function obtener_localstorage() {
+//     if (localStorage.getItem("persona")) {
+//         // Verificamos que existe persona en el localstorage
+//         let persona = JSON.parse(localStorage.getItem("persona"));
+//         console.log(persona)
+//     }
+//     else {
+//         console.log("No hay entradas en el localStorage")
+//     }
+// }
+
+// function guardar_localstorage() {
+//     let persona = {
+//         nombre: "Fernando",
+//         edad: 31,
+//         correo: "xyz@xyz.com",
+//         coords: {
+//             lat: 10,
+//             lng: -10
+//         }
+//     }
+//     let nombre = "Juan";
+//     localStorage.setItem("persona", JSON.stringify(persona));
+// }
+
+// function guardarCarritoLocalStorage(producto) {
+//     let productos;
+//     productos = this.obtenerCarritoLocalStorage();
+//     productos.push(producto);
+//     localStorage.setItem('productos', JSON.stringify(productos));
+// }
+
+// function obtenerCarritoLocalStorage() {
+//     let productoLocalStorage;
+//     if(localStorage.getItem('productos') === null){
+//         productoLocalStorage= [];
+//     }
+//     else {
+//         productoLocalStorage = JSON.parse(localStorage.getItem('productos'));
+//     }
+//     return productoLocalStorage;
+// }
+
+
+// function eliminarProductoLocalStorage(itemTitle) {
+//     let productosLocalStorage;
+//     productosLocalStorage = this.obtenerCarritoLocalStorage();
+//     productosLocalStorage.forEach(function(productoLocalStorage, index) {
+//         if (productoLocalStorage.title === itemTitle) {
+//             productosLocalStorage.splice(index, 1);
+//         }
+//     });
+//     localStorage.setItem('productos', JSON.stringify(productosLocalStorage));
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////
+// Eventos
+///////////////////
+
+// // Agrego Nombre
+// const eventKeyNombre = document.querySelector("#agregaNombre");
+// eventKeyNombre.addEventListener("input", (e)=>{
+//     console.log(e.target.value)
+//     }
+// );
+
+// // Agrego Saldo
+// const eventKeySaldo = document.querySelector("#agregaSaldo");
+// eventKeySaldo.addEventListener("input", (e)=>{
+//     console.log(e.target.value)
+//     }
+// );
+
+// //Botón envio
+// // let btnAgregoNombre = document.querySelector("#form-nombreSaldo");
+// // btnAgregoNombre.addEventListener("submit", validarEnvio);
+
+// // function nombreYSaldo (nombre, saldo) {
+// //     this.nombre = nombre;
+// //     this.saldo = saldo
+// // };
+
+
+// // //LOCALSTORAGE
+// // const eventKeyNombre = JSON.stringify(eventKeyNombre);
+// // localStorage.setItem("Nombre y Saldo", nombreYSaldo);
+
+// function validarEnvio(e){
+//     e.preventDefault();
+//     const nombreYSaldoAMostrar = JSON.parse(localStorage.getItem("Nombre y Saldo"))
+//     let contenedorDinero = document.createElement("h3");
+//     contenedorDinero.innerHTML = `
+//     <h3>Dinero de ${nombreYSaldoAMostrar.nombre}: $${nombreYSaldoAMostrar.saldo}</h3>
+//     `;
+//     aside.appendChild(contenedorDinero);
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Listado productos
+async function fetchPapitas() {
+    const response = await fetch('./data.json')
+    return await response.json()
+}
+
+// Llamo a esa función
+let listaPapitas = [];
+
+fetchPapitas().then(papita => {
+    listaPapitas = papita
+    mostrarListaPapitas()
+})
+
+function mostrarListaPapitas() {
+    for (papita of listaPapitas) {
+        let contenedor = document.createElement("section");
+        contenedor.innerHTML = `
+        <section class="contProducto">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="item">
+                        <h3 class="item-title">${papita.nombre}</h3>
+                        <img class="item-image" src="papita.jpg">
+                        <div class="item-details">
+                            <h4 class="item-categoria">${papita.categoria}</h4>
+                            <h4 class="item-id">ID Producto: ${papita.id}</h4>
+                            <h4 class="item-price">$${papita.precio}</h4>
+                            <button class="item-button btn btn-primary addToCart">AÑADIR AL CARRITO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        `;
+        contenedorStore.appendChild(contenedor);
+    };
+}
+
+mostrarListaPapitas();
+
