@@ -12,8 +12,8 @@
 
 
 // let listaPapitas = [
-//     { id: 01, nombre: "Clasica",         precio: 10, categoria: "normal",   descripcion: "Solo papitas" },
-//     { id: 02, nombre: "Clasica",         precio: 20, categoria: "deluxe",   descripcion: "Solo papitas" },
+   //     { id: 01, nombre: "Clasica",         precio: 10, categoria: "normal",   descripcion: "Solo papitas" },
+   //     { id: 02, nombre: "Clasica",         precio: 20, categoria: "deluxe",   descripcion: "Solo papitas" },
 //     { id: 03, nombre: "Cheddar",         precio: 15, categoria: "normal",   descripcion: "Con queso cheddar" },
 //     { id: 04, nombre: "Wasabi",          precio: 15, categoria: "normal",   descripcion: "Con condimento picante wasabi" },
 //     { id: 05, nombre: "Wacamole",        precio: 20, categoria: "premium",  descripcion: "Con wacamole. Se le puede agregar tomate." },
@@ -37,31 +37,34 @@ let listaPapitas = [];
 
 fetchPapitas().then(papita => {
     listaPapitas = papita
+    mostrarListaPapitas();
+})
+
+function mostrarListaPapitas(){
     for (papita of listaPapitas) {
         let contenedor = document.createElement("section");
         contenedor.innerHTML = `
         <section class="contProducto">
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <div class="item">
-                        <h3 class="item-title">${papita.nombre}</h3>
-                        <img class="item-image" src="papita.jpg">
-                        <div class="item-details">
-                            <h4 class="item-categoria">${papita.categoria}</h4>
-                            <h4 class="item-id">ID Producto: ${papita.id}</h4>
-                            <h4 class="item-price">$${papita.precio}</h4>
-                            <button class="item-button btn btn-primary addToCart">AÑADIR AL CARRITO</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row">
+        <div class="col-12 col-md-6">
+        <div class="item">
+        <h3 class="item-title">${papita.nombre}</h3>
+        <img class="item-image" src="papita.jpg">
+        <div class="item-details">
+        <h4 class="item-categoria">${papita.categoria}</h4>
+        <h4 class="item-id">ID Producto: ${papita.id}</h4>
+        <h4 class="item-price">$${papita.precio}</h4>
+        <button class="item-button btn btn-primary addToCart">AÑADIR AL CARRITO</button>
+        </div>
+        </div>
+        </div>
+        </div>
         </section>
         `;
         contenedorStore.appendChild(contenedor);
     };
-})
-
-
+}
+mostrarListaPapitas();
 
 ////////////////////////////////
 //// Agrego buscaXNombre
@@ -202,40 +205,40 @@ function validaCheckbox3(){
 //ESCUCHAMOS A TODOS LOS "AÑADIR LA CARRITO"
 const addToShoppingCartButtons = document.querySelectorAll('.addToCart');
 
-/* VERIFICAMOS
-addToShoppingCartButtons.forEach((addToCardButton) => {
-addToCardButton.addEventListener(`click`, () => console.log(`Click`));
-});
-*/
+/* VERIFICAMOS */
+// addToShoppingCartButtons.forEach((addToCartButton) => {
+// addToCartButton.addEventListener(`click`, () => console.log(`Click`));
+// });
+
 addToShoppingCartButtons.forEach((addToCartButton) => {
     addToCartButton.addEventListener('click', addToCartClicked);
 });
 
 
 //LOCALSTORAGE
-// document.addEventListener('DOMContentLoaded', () => {
-//     if (localStorage.getItem('shoppingCartItemsContainer')){
-//         carrito = JSON.parse(localStorage.getItem('shoppingCartItemsContainer'))
-//         updateShoppingCartTotal();
-//     }
-// })
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('elementsTitle')){
+        carrito = JSON.parse(localStorage.getItem('elementsTitle'))
+        updateShoppingCartTotal();
+    }
+})
 
 function addToCartClicked(event) {
     /*VERIFICAMOS
     const button = event.target;
     console.log(button)*/
     const button = event.target;
-  //Evento mas cercano con item
+ //Evento mas cercano con item
     const item = button.closest('.item');
-  //El text content es para tomar solo el contenido
+ //El text content es para tomar solo el contenido
     const itemTitle = item.querySelector('.item-title').textContent;
     const itemPrice = item.querySelector('.item-price').textContent;
     const itemImage = item.querySelector('.item-image').src;
     const itemID    = item.querySelector('.item-id').textContent;
     const itemCategoría = item.querySelector('.item-categoria').textContent;
 
-  //Creamos una nueva función para que la misma no sea tan extensa.
-  //Toma como parámetros las tres variables que recolectamos.
+ //Creamos una nueva función para que la misma no sea tan extensa.
+ //Toma como parámetros las tres variables que recolectamos.
     addItemToShoppingCart(itemTitle, itemPrice, itemImage);
     }
 
@@ -245,14 +248,14 @@ function addToCartClicked(event) {
 //Seleccionamos contenedor y metemos dentro de una variable.
 const shoppingCartItemsContainer = document.querySelector('.shoppingCartItemsContainer');
 function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
-  //Verificamos
-  //console.log(itemTitle, itemPrice, itemImage);
+ //Verificamos
+ //console.log(itemTitle, itemPrice, itemImage);
 
-  //Necesitamos que no duplique en la lista los elementos ya presentes, sino que sume a la cantidad.
-  // El shoppingCartItemsContainer toma todas las clases shoppingCartItemTitle dentro de una variable llamada elementsTittle
+ //Necesitamos que no duplique en la lista los elementos ya presentes, sino que sume a la cantidad.
+ // El shoppingCartItemsContainer toma todas las clases shoppingCartItemTitle dentro de una variable llamada elementsTittle
     const elementsTitle = shoppingCartItemsContainer.getElementsByClassName('shoppingCartItemTitle');
 
-    //Sweet Alert
+   //Sweet Alert
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -268,27 +271,27 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
         icon: 'success',
         title: 'Producto agregado al carrito.'
     })
-  //Verificamos cada uno d los elementos uqe van llegando.
+ //Verificamos cada uno d los elementos uqe van llegando.
     for (let i = 0; i < elementsTitle.length; i++) {
     if (elementsTitle[i].innerText === itemTitle) {
-      //console.log(elementsTitle[i].innerText);
-      //Sube tres elementos div hasta el shoppingCartItem y edsde ahi traemos la clase shoppingCartItemQuantity
-      //Busca los elementos que ya existen en el carrito, sino no.
+     //console.log(elementsTitle[i].innerText);
+     //Sube tres elementos div hasta el shoppingCartItem y edsde ahi traemos la clase shoppingCartItemQuantity
+     //Busca los elementos que ya existen en el carrito, sino no.
         let elementQuantity = elementsTitle[i].parentElement.parentElement.parentElement.querySelector('.shoppingCartItemQuantity')
         elementQuantity.value++;
 
-      //REVISAR
-      // $('.toast').toast('show');
+     //REVISAR
+     // $('.toast').toast('show');
 
-      //Actualizamos precio al ir sumando
+     //Actualizamos precio al ir sumando
         updateShoppingCartTotal();
-      //El return es necesario porque sino se vuelve a repetir el mismo elemento, dado quee el código se sigue ejecutando.
+     //El return es necesario porque sino se vuelve a repetir el mismo elemento, dado quee el código se sigue ejecutando.
         return;
     }
 }
 
 
-  //Creamos el elemento que crearemos (un div)
+ //Creamos el elemento que crearemos (un div)
     const shoppingCartRow = document.createElement('div');
     const shoppingCartContent = `
     <div class="row shoppingCartItem">
@@ -311,19 +314,19 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
             </div>
         </div>
     </div>`;
-  //Ahora lo ponemos dentro de la variable creada shoppoiingCardRow
+ //Ahora lo ponemos dentro de la variable creada shoppoiingCardRow
     shoppingCartRow.innerHTML = shoppingCartContent;
     shoppingCartItemsContainer.append(shoppingCartRow);
 
-    // //LOCALSTORAGE
-    // localStorage.setItem('carrito', JSON.stringify(shoppingCartItemsContainer))
+   // //LOCALSTORAGE
+    localStorage.setItem('carrito', JSON.stringify(elementsTitle))
 
 
-  //SopphongCartRow es el div que tiene el shoppingCartContent.
+ //SopphongCartRow es el div que tiene el shoppingCartContent.
 
-  //Escucha la clase del boton eliminar... Y que escuche el evento click.
+ //Escucha la clase del boton eliminar... Y que escuche el evento click.
     shoppingCartRow.querySelector('.buttonDelete').addEventListener('click', removeShoppingCartItem);
-  //Escuchamos la clase shoppingCartItemQuantity... Escucha el evento change y llama a la función quiantityChanged
+ //Escuchamos la clase shoppingCartItemQuantity... Escucha el evento change y llama a la función quiantityChanged
     shoppingCartRow.querySelector('.shoppingCartItemQuantity').addEventListener('change', quantityChanged);
 
     updateShoppingCartTotal();
@@ -331,45 +334,45 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
 
 //Actualizamos precio conforme vamos agregando productos
 function updateShoppingCartTotal() {
-  //Precio inicial
+ //Precio inicial
     let total = 0;
     const shoppingCartTotal = document.querySelector('.shoppingCartTotal');
-  //Seleccionamos los elementos que necesitamos, los shoppingCardItem (todos esos elementos, por eso el querySelectorAll)
+ //Seleccionamos los elementos que necesitamos, los shoppingCardItem (todos esos elementos, por eso el querySelectorAll)
     const shoppingCartItems = document.querySelectorAll('.shoppingCartItem');
-  //Verificamos
-  // console.log(updateShoppingCartTotal);
+ //Verificamos
+ // console.log(updateShoppingCartTotal);
 
-  // //Operaremos con cada uno de ellos
+ // //Operaremos con cada uno de ellos
     shoppingCartItems.forEach(shoppingCartItem => {
-    //Con una variable seleccionamos el elemento y con otra el valor de ese elemento
+   //Con una variable seleccionamos el elemento y con otra el valor de ese elemento
     const shoppingCartItemPriceElement = shoppingCartItem.querySelector('.shoppingCartItemPrice');
     const shoppingCartItemPrice = Number(
-      //Reemplazamos el peso por nada.
+     //Reemplazamos el peso por nada.
         shoppingCartItemPriceElement.textContent.replace('$', '')
     );
-    //Trabajaremos con las cantidades
-    //Traemos el elemento
+   //Trabajaremos con las cantidades
+   //Traemos el elemento
     const shoppingCartItemQuantityElement = shoppingCartItem.querySelector('.shoppingCartItemQuantity');
-    //Seleccionamos solamente el número
+   //Seleccionamos solamente el número
     const shoppingCartItemQuantity = Number(shoppingCartItemQuantityElement.value);
-    //Precio * cantidad
-    total = total + shoppingCartItemPrice * shoppingCartItemQuantity;
+   //Precio * cantidad
+   total = total + shoppingCartItemPrice * shoppingCartItemQuantity;
     });
-  //el fixed es para deterinar la cantidad ed dígitos.
+ //el fixed es para deterinar la cantidad ed dígitos.
     shoppingCartTotal.innerHTML = `${total.toFixed(2)}$`;
 }
 
 //Función para eliminar del carrito
 function removeShoppingCartItem(event) {
     const buttonClicked = event.target;
-  //Verificamos que tome el evento del boton eliminar.
-  //console.log(buttonClicked)
-  //El elemento mas cercado con la clase shoppingCartItem se elimina.
+ //Verificamos que tome el evento del boton eliminar.
+ //console.log(buttonClicked)
+ //El elemento mas cercado con la clase shoppingCartItem se elimina.
     buttonClicked.closest('.shoppingCartItem').remove();
-  //Necesitamos actualizar el monto sumado del carrito
+ //Necesitamos actualizar el monto sumado del carrito
     updateShoppingCartTotal();
 
-  //Sweet Alert
+ //Sweet Alert
     const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -391,12 +394,12 @@ function removeShoppingCartItem(event) {
 //Cambiamos cantidad de elementos de cada tipo en el carrito
 function quantityChanged(event) {
     const input = event.target;
-  //Nos aseguramos con el if que no haya valores negativos
+ //Nos aseguramos con el if que no haya valores negativos
     if (input.value <= 0) {
     input.value = 1;
     }
-  //input.value <= 0 ? (input.value = 1) : null;
-  //Actalizamos los precios.
+ //input.value <= 0 ? (input.value = 1) : null;
+ //Actalizamos los precios.
     updateShoppingCartTotal();
 }
 
@@ -405,9 +408,9 @@ const comprarButton = document.querySelector('.comprarButton');
 comprarButton.addEventListener("click", comprarButtonClicked);
 
 function comprarButtonClicked() {
-    //Variamos el carrito
+   //Variamos el carrito
     shoppingCartItemsContainer.innerHTML = '';
-    //Actualizamos precio
+   //Actualizamos precio
     updateShoppingCartTotal();
     Swal.fire({
         title: 'Compra realizada con exito!',
@@ -417,4 +420,5 @@ function comprarButtonClicked() {
         }
     )
 }
+
 
